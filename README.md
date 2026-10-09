@@ -58,10 +58,12 @@ Implementa el protocolo de 7 pasos diseñado por investigadores experimentados:
 * **Scopus & Web of Science Importer:** Si tienes acceso universitario, puedes exportar búsquedas en CSV o BibTeX y colocarlas en `investigations/<tema>/raw/`; el script `import_scopus_wos.py` las procesa directamente.
 * **Ranking Multidimensional:** Identifica artículos canónicos consolidados y Joyas Emergentes de 2025/2026.
 
-### 3. `paper-validator` (Reviewer 2 y Viabilidad Q1/Q2)
+### 3. `paper-validator` (Validador de Ideas & Reviewer 2 Adversarial)
+* **Entrevista de Admisión Crítica (*Grill the Idea*):** Antes de calificar la idea, el agente formula entre 3 y 5 preguntas incisivas sobre el delta metodológico, los datasets, los baselines del SOTA (2024–2026), ablaciones y el venue deseado.
 * **Auditoría Adversarial:** Compara la idea del paper contra el corpus recopilado calculando solapamiento semántico conceptual (soporta español e inglés).
-* **Cálculo de Probabilidad:** Estima las probabilidades reales de aceptación en revistas Q1 vs Q2.
-* **Planes de Pivote:** Genera 3 opciones estratégicas (Complejidad/Escala, Estudio de Ablación o Frontera de Pareto/Eficiencia) para elevar una idea con riesgo de rechazo a nivel Q1.
+* **Clasificación Categórica de Cuartiles y Venues:** Determina si la propuesta califica para Revista JCR/Scopus Q1, Q2, Q3 o Conferencia CORE A*, A, B.
+* **Cálculo de Probabilidad:** Estima las probabilidades porcentuales reales de aceptación en revistas Q1 vs Q2.
+* **Planes de Pivote:** Genera 3 opciones estratégicas (Complejidad/Escala, Estudio de Ablación o Frontera de Pareto/Eficiencia) para elevar una idea con riesgo de rechazo (*Desk Reject*) a nivel Q1.
 
 ---
 

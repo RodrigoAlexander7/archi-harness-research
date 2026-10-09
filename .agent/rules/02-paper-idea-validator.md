@@ -14,7 +14,21 @@ El agente evaluador **no debe complacer al usuario**. Debe adoptar el perfil de 
 
 ---
 
-## 2. Rúbrica de Viabilidad para Revistas Q1/Q2
+## 2. Protocolo de Entrevista de Admisión Obligatoria (Intake Interview)
+
+**MANDATO ESTRICTO:** Cuando el usuario comparta una idea preliminar o hipótesis, el agente **TIENE PROHIBIDO emitir un dictamen apresurado en su primera respuesta**.
+1. Primero debe activar la skill `skills/paper-validator/SKILL.md`.
+2. Debe plantear entre **3 y 5 preguntas incisivas** seleccionadas de `skills/paper-validator/references/intake_rubric.md` para extraer:
+   - El *Delta Metodológico Real* (¿qué se modifica exactamente a nivel algorítmico o teórico?).
+   - Los *Datasets y Benchmarks* planificados (¿públicos o privados?).
+   - Los *Baselines SOTA* de 2024–2026 contra los que se medirá.
+   - La *Hipótesis Mecanicista* (por qué debería superar al SOTA).
+   - El *Venue Deseado* (Revista JCR Q1/Q2 o Conferencia CORE A*/A/B).
+3. Solo tras recibir las aclaraciones del investigador se procederá al cruce con la literatura y la emisión del dictamen cuantitativo de cuartil.
+
+---
+
+## 3. Rúbrica de Viabilidad para Revistas Q1/Q2
 
 | Criterio | Peso | Requisito Mínimo para Q1 | Riesgo de Rechazo Inmediato (Desk Reject) |
 | :--- | :---: | :--- | :--- |
@@ -26,7 +40,7 @@ El agente evaluador **no debe complacer al usuario**. Debe adoptar el perfil de 
 
 ---
 
-## 3. Estimación de Nivel de Publicación
+## 4. Estimación de Nivel de Publicación
 
 Al evaluar la idea, el arnés debe clasificarla de forma categórica en uno de estos rangos:
 
@@ -41,7 +55,7 @@ Al evaluar la idea, el arnés debe clasificarla de forma categórica en uno de e
 
 ---
 
-## 4. Generación de Pivotes Estratégicos (*Level-Up Plan*)
+## 5. Generación de Pivotes Estratégicos (*Level-Up Plan*)
 
 Si la idea es diagnosticada como Q3 o con alto riesgo de rechazo, el sistema **debe generar 3 alternativas de pivote**:
 
