@@ -17,6 +17,7 @@ Al recibir cualquier solicitud, clasifica la tarea y activa la skill o script co
 | **`MANUSCRIPT_AUDIT`** | Revisión editorial exhaustiva de borrador completo | `skills/peer-review` | K-Dense (`scientific-agent-skills`) |
 | **`ACADEMIC_PLOTTING`** | Gráficas y curvas en Python con estándar IEEE/Springer | `skills/academic-plotting` | Orchestra (`AI-research-SKILLs`) |
 | **`PAPER_WRITING_GUIDE`** | Guía de redacción de papers de ML y sistemas para journals | `skills/ml-paper-writing` | Orchestra (`AI-research-SKILLs`) |
+| **`WEB_DEEP_RESEARCH`** | Investigación web profunda en blogs, docs y reportes | `skills/gpt-researcher` | Assaf Elovic (`gpt-researcher`) |
 | **`COMMUNITY_PULSE`** | Rastreo de tendencias recientes en Reddit, HN y X | `skills/last30days` | mvanhorn (`last30days-skill`) |
 | **`IMPORT_INSTITUTIONAL`** | Ingesta de exportaciones CSV/BibTeX de Scopus/WoS | `skills/literature-harvester/scripts/import_scopus_wos.py` | Nativa |
 

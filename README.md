@@ -28,6 +28,7 @@ archi-harness/
 │   ├── peer-review/                          # Auditoría formal de manuscritos según directrices (K-Dense)
 │   ├── academic-plotting/                    # Generador de gráficas científicas para IEEE/Springer (Orchestra)
 │   ├── ml-paper-writing/                     # Guías y estructura para redacción de papers de ML (Orchestra)
+│   ├── gpt-researcher/                       # Investigación web autónoma y reportes con citas (Assaf Elovic)
 │   └── last30days/                           # Rastreador de tendencias y pulso comunitario en Reddit/HN/X (mvanhorn)
 ├── data/
 │   └── venues_hindex.json                    # Base curada de cuartiles Q1/Q2/Q3 y H5 de journals top
