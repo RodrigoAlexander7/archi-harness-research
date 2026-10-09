@@ -39,41 +39,45 @@ Al recibir una idea, analiza qué información falta y formula **entre 3 y 5 pre
 5. **Ablaciones y Validación Estadística:**
    * *"¿Qué estudios de ablación se planifican para demostrar qué componente aporta la ganancia? ¿Se harán pruebas de significancia (Wilcoxon / t-test con p < 0.05) sobre múltiples semillas?"*
 6. **Objetivo de Publicación:**
-   * *"¿Apuntas prioritariamente a una Revista Indexada (JCR/Scopus Q1 o Q2) o a una Conferencia Internacional (CORE A*, A, B)?"*
+   * *"¿Apuntas prioritariamente a una Revista Indexada (JCR/Scopus Q1, Q2 o Q3) o a una Conferencia Internacional (CORE A*, A, B)?"*
 
 ---
 
-## Etapa 2: Búsqueda de Solapamiento con el Estado del Arte (*Prior Art*)
+## Etapa 2: Búsqueda Multi-API de Prior Art y Preprints
 
 Una vez clarificada la idea:
 1. Extrae los términos técnicos precisos.
-2. Consulta el corpus del estado del arte recopilado o ejecuta `search_openalex.py` para verificar si existen trabajos con títulos o abstracts similares en los últimos 24 meses.
-3. Ejecuta la auditoría semántica:
+2. Consulta el corpus del estado del arte recopilado o activa la búsqueda Multi-API (OpenAlex + arXiv live feed) para no omitir preprints publicados recientemente.
+
+---
+
+## Etapa 3: Auditoría Profunda y Dictamen Adversarial (Reviewer 2 Suite)
+
+El arnés ejecuta una evaluación multidimensional mediante `deep_audit.py` (o `assess_novelty.py`):
 ```bash
-python skills/paper-validator/scripts/assess_novelty.py \
-    --idea "<Descripción detallada refinada tras la entrevista>" \
-    --literature investigations/<tema>/raw/articles.json \
-    --output investigations/<tema>/paper_validation_dictamen.md
+python skills/paper-validator/scripts/deep_audit.py \
+    --idea "<Texto de la idea, borrador o ruta a archivo .tex/.md>" \
+    --literature outputs/<propuesta>/raw/articles.json \
+    --query-arxiv \
+    --output outputs/<propuesta>/auditoria_profunda_dictamen.md
 ```
 
----
-
-## Etapa 3: Dictamen Transparente y Clasificación de Cuartil
-
-El dictamen generado debe ser **frontal, transparente y sin filtros condescendientes**:
-
-### Clasificación Categórica:
-* **Apta para Revista Q1 / Conferencia CORE A* (Probabilidad > 70%):** Novedad conceptual clara, evaluación en benchmarks estándar reconocidos, ablaciones completas y justificación matemática/estructural.
-* **Apta para Revista Q2 / Conferencia CORE A (Probabilidad > 70%):** Aplicación rigurosa a problemas complejos con novedad incremental o en nicho específico.
-* **Nivel Q3 - Q4 / CORE B (Requiere Pivote Urgente):** Aplicación directa de técnicas conocidas sin modificación metodológica relevante o con datasets muy pequeños.
-* **Desk Reject Inmediato (Riesgo Crítico):** Idea ya resuelta en la literatura reciente (solapamiento > 60%), o carente de novedad técnica ("unir A + B sin adaptación").
+### Capacidades Evaluadas en el Dictamen:
+1. **Verificación Claim-Evidence Gap (Inspirado en peer-review):**
+   - Contrasta promesas ("real-time", "alta precisión en todas las clases", "operación sin sobrecalentamiento") contra los números empíricos reales (FPS reportados, tamaño de muestra $N$ por clase, temperaturas observadas).
+2. **Radar de Trampas Técnicas y Desafíos Comunitarios (Inspirado en last30days):**
+   - Detecta trampas comunes de la arquitectura (ambigüedad angular en cajas OBB, colapso de precisión en cuantización INT8, thermal throttling en micro-SoCs, fuga de datos temporal por splits a nivel de cuadro vs clip).
+3. **Predicción Cuantitativa por Cuartiles (Q1, Q2 y Q3):**
+   - **Scopus Q3 (ej. IJACSA, IJCDS):** Probabilidad alta para datasets empíricos regionales y estudios de data scaling.
+   - **Scopus Q2 (ej. IEEE Access, Sensors):** Probabilidad sujeta a inclusión de baselines modernos y optimización de latencia.
+   - **JCR / Scopus Q1 (ej. Scientific Reports):** Probabilidad sujeta a novedades arquitectónicas y ablaciones con significancia estadística.
 
 ---
 
-## Etapa 4: Plan de Pivote Estratégico (*Level-Up to Q1*)
+## Etapa 4: Matriz de Delta Experimental Mínimo y Planes de Pivote
 
-Si la idea cae en Q3 o tiene alto riesgo de rechazo, formula **3 alternativas de pivote concretas**:
+El dictamen entrega una tabla con las acciones experimentales exactas que el investigador debe ejecutar para garantizar aceptación en su cuartil objetivo:
+1. **Ruta Q3 (Publicación Segura y Rápida en 4–8 semanas):** Ajustar el framing hacia monitoreo de baja tasa y documentar detalladamente el dataset regional.
+2. **Ruta Q2 (Elevación de Impacto en 3–5 meses):** Añadir baselines contemporáneos (ej. YOLOv8n-OBB) y cuantización INT8 formal.
+3. **Ruta Q1 (Excelencia Teórica en 6–12 meses):** Diseñar mecanismos de atención propios, verificar en benchmarks internacionales reconocidos y contrastar hipótesis con tests estadísticos.
 
-1. **Pivote de Escala y Benchmarks:** Qué datasets estándar más exigentes o qué baselines de 2024–2026 elevarían el trabajo a Q1.
-2. **Pivote Teórico o Mecanicista:** Qué demostración formal, análisis de complejidad computacional o estudio de interpretabilidad puede añadirse.
-3. **Pivote de Frontera de Pareto / Eficiencia:** Cómo enfocar la contribución hacia la optimización de latencia, memoria o costo energético si no es posible batir al SOTA en métricas absolutas.

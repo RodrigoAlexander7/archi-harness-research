@@ -88,19 +88,23 @@ def evaluate_idea(idea_text: str, literature: List[Dict[str, Any]]) -> Dict[str,
     
     if max_overlap >= 65.0:
         delta_status = "Alto Riesgo de Solapamiento Crítico (Novedad Comprometida)"
-        q1_prob = 20
-        q2_prob = 45
-        verdict = "Requiere Pivote Urgente (Riesgo de Desk Reject por falta de novedad)"
+        q1_prob = 15
+        q2_prob = 35
+        q3_prob = 60
+        verdict = "Requiere Pivote Urgente (Riesgo de Desk Reject en Q1/Q2; viable en Q3 con adaptaciones)"
     elif max_overlap >= 40.0:
         delta_status = "Novedad Incremental Moderada"
-        q1_prob = 45
-        q2_prob = 75
-        verdict = "Viable para Revista Q2 / Requiere fortalecer baselines para Q1"
+        q1_prob = 40
+        q2_prob = 70
+        q3_prob = 85
+        verdict = "Viable para Revista Q2 / Q3 (Requiere fortalecer baselines para Q1)"
     else:
         delta_status = "Novedad Conceptual Diferenciada"
-        q1_prob = 70
-        q2_prob = 88
-        verdict = "Apta para Revista Q1 (Sujeto a rigor experimental y baselines SOTA)"
+        q1_prob = 65
+        q2_prob = 85
+        q3_prob = 92
+        verdict = "Apta para Revista Q2 / Q3 (Apta para Q1 sujeto a baselines y ablaciones formales)"
+
 
     # Extraer venues de las obras más cercanas para sugerir dónde publicar
     recommended_venues = []
@@ -123,21 +127,24 @@ def evaluate_idea(idea_text: str, literature: List[Dict[str, Any]]) -> Dict[str,
         "verdict": verdict,
         "q1_probability": q1_prob,
         "q2_probability": q2_prob,
+        "q3_probability": q3_prob,
         "top_prior_art": top_prior_art,
         "recommended_venues": recommended_venues
     }
 
 def format_evaluation_report(eval_data: Dict[str, Any], idea_summary: str) -> str:
     lines = [
-        "# Dictamen de Viabilidad de Paper para Revistas JCR/Scopus Q1/Q2",
+        "# Dictamen de Viabilidad de Paper para Revistas JCR/Scopus Q1/Q2/Q3",
         "",
         f"**Idea Evaluada:** {idea_summary[:120]}...",
         f"**Diagnóstico Global:** `{eval_data['verdict']}`",
-        f"**Probabilidad Estimada de Aceptación en Q1:** **{eval_data['q1_probability']}%**",
+        f"**Probabilidad Estimada de Aceptación en Q3:** **{eval_data['q3_probability']}%** (Publicación Rápida/Segura)",
         f"**Probabilidad Estimada de Aceptación en Q2:** **{eval_data['q2_probability']}%**",
+        f"**Probabilidad Estimada de Aceptación en Q1:** **{eval_data['q1_probability']}%**",
         f"**Evaluación de Novedad:** {eval_data['delta_status']} (Solapamiento máx: {eval_data['max_overlap_percent']}%)",
         "",
         "---",
+
         "",
         "## 1. Obras Más Cercanas en el Estado del Arte (Prior Art)",
         "| # | Título | Año | Venue | Cuartil | Solapamiento | Citas | DOI |",
