@@ -1,0 +1,10 @@
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Tipo | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | Edge ML Technique for Smart Traffic Management in Intelligent Tra... | 2024 | IEEE Access | No rankeado en DB local | 25 | 88 (29.33) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1109/access.2024.3365930) |
+| 2 | A Self-Adaptive Traffic Signal System Integrating Real-Time Vehic... | 2025 | Inventions | No rankeado en DB local | 25 | 34 (17.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.3390/inventions10010014) |
+| 3 | Task-Oriented Semantic Communication in Large Multimodal Models-B... | 2025 | IEEE Transactions on Mobile Co | No rankeado en DB local | 25 | 20 (10.0) | SOTA Benchmark | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1109/tmc.2025.3564543) |
+| 4 | Runtime Monitoring Approach to Safeguard Behavior of Autonomous V... | 2025 | Electronics | No rankeado en DB local | 25 | 6 (3.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.3390/electronics14122366) |
+| 5 | Automated geolocalization of vehicles from UAV footage: evaluatin... | 2025 | Applied Geomatics | No rankeado en DB local | 25 | 4 (2.0) | SOTA Benchmark | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1007/s12518-025-00662-2) |
+| 6 | Consistent vehicle trajectory extraction from aerial recordings u... | 2025 | Scientific Reports | No rankeado en DB local | 25 | 4 (2.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-025-12301-2) |
+| 7 | Driver Behavior in Mixed Traffic with Autonomous Vehicles | 2026 | Future Transportation | No rankeado en DB local | 25 | 1 (1.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.3390/futuretransp6030097) |
+| 8 | A Cascaded Framework for Vehicle Detection in Low-Resolution Traf... | 2026 | Electronics | No rankeado en DB local | 25 | 1 (1.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.3390/electronics15051119) |

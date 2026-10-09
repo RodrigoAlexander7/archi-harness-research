@@ -1,79 +1,59 @@
 # Archi Research Harness
 
-Harness agéntico para revisión sistemática de literatura y validación estratégica de ideas de investigación enfocadas en **revistas indexadas JCR / Scopus (Q1/Q2)** en ingeniería y ciencias.
+Harness agéntico para revisión sistemática de literatura y validación estratégica de ideas de investigación enfocadas en **revistas indexadas JCR / Scopus (Q1/Q2/Q3)** y conferencias en ingeniería y ciencias.
 
 ---
 
-## Arquitectura Híbrida: Reglas (Guardrails) + Skills de Orquestación
+## Arquitectura del Harness
 
-El arnés combina **reglas del sistema** (que prohíben la superficialidad y fuerzan rigor) con **skills modulares** (que ejecutan los flujos paso a paso):
+El arnés combina **reglas del sistema** (guardrails que prohíben la superficialidad) con **skills modulares y ejecutables**:
 
-```
+```text
 archi-harness/
 ├── .agent/
 │   ├── rules/
-│   │   ├── 00-router.md                      # Enrutador de tareas según la intención del usuario
-│   │   ├── 01-systematic-literature-review.md # Guardrail estricto: obliga a invocar systematic-slr
-│   │   ├── 02-paper-idea-validator.md        # Criterios implacables de Reviewer 2 para revistas Q1/Q2
-│   │   └── 03-venue-evaluation-criteria.md   # Criterios de indexación (H5-index, SJR, JCR)
+│   │   ├── 00-router.md                      # Enrutador de intenciones del usuario
+│   │   ├── 01-systematic-literature-review.md # Guardrail estricto: activa systematic-slr
+│   │   ├── 02-paper-idea-validator.md        # Rúbrica adversarial para revistas Q1/Q2/Q3
+│   │   └── 03-venue-evaluation-criteria.md   # Criterios H5-index, SJR y JCR
 │   └── templates/
-│       ├── slr_report_template.md            # Plantilla formal para el estado del arte
-│       └── paper_validation_report_template.md # Plantilla formal de dictamen y pivotes a Q1
+│       ├── slr_report_template.md            # Plantilla formal de estado del arte
+│       └── paper_validation_report_template.md # Plantilla formal de dictamen y pivotes
 ├── skills/
-│   ├── systematic-slr/                       # << SKILL ORQUESTADORA DE 7 PASOS >>
-│   │   └── SKILL.md                          # Flujo con checkpoints interactivos
-│   ├── literature-harvester/                 # << SKILL DE EXTRACCIÓN Y RANKING >>
+│   ├── systematic-slr/                       # Orquestador del protocolo de 7 pasos (SLR)
+│   │   └── SKILL.md                          # Flujo procedimental y checkpoints interactivos
+│   ├── literature-harvester/                 # Extracción y procesamiento de literatura
 │   │   ├── SKILL.md
 │   │   └── scripts/
 │   │       ├── search_openalex.py            # Búsqueda abierta (IEEE, ACM, Springer) sin API key
 │   │       ├── import_scopus_wos.py          # Ingesta de CSV/BibTeX con acceso universitario
 │   │       └── rank_and_filter.py            # Ranking por H5-index, citas anuales y Joyas Emergentes
-│   └── paper-validator/                      # << SKILL AUDITORA DE IDEAS >>
+│   └── paper-validator/                      # Validador de ideas & Reviewer 2 adversarial
 │       ├── SKILL.md
+│       ├── references/
+│       │   └── intake_rubric.md              # Rúbrica de 6 dimensiones y matriz de cuartiles
 │       └── scripts/
-│           └── assess_novelty.py             # Detección de solapamiento semántico bilingüe y plan de pivote
+│           └── assess_novelty.py             # Detección de solapamiento bilingüe y plan de pivote
 ├── data/
-│   └── venues_hindex.json                    # Base curada de cuartiles Q1/Q2 y H5 de revistas top
-├── investigations/                           # Espacio de trabajo para cada proyecto
-├── pyproject.toml
+│   └── venues_hindex.json                    # Base curada de cuartiles Q1/Q2/Q3 y H5 de journals top
+├── investigations/                           # Espacio de trabajo de proyectos e investigaciones
+│   ├── demo_quantum/                         # Ejemplo de demostración validado
+│   └── yolo_peruvian_traffic/                # Ejemplo de caso de estudio en Edge AI
+├── pyproject.toml                            # Gestión de dependencias limpias con uv
 └── README.md
 ```
 
 ---
 
-## Catálogo de Skills
-
-### 1. `systematic-slr` (Orquestación del Estado del Arte)
-Implementa el protocolo de 7 pasos diseñado por investigadores experimentados:
-1. **Descomposición booleana atómica:** Prohibido usar lenguaje natural en motores de búsqueda.
-2. **Checkpoint de términos:** El agente valida las palabras clave y el filtro negativo (`NOT`) con el investigador antes de extraer.
-3. **Ventana de 3 a 5 años:** Prioriza literatura reciente.
-4. **Filtro de exclusión negativa:** Elimina ruido de disciplinas adyacentes (ej. `mechanics optics` en computación).
-5. **Ranking multidimensional:** Pondera citas anuales con el prestigio del journal (H5-index y cuartil).
-6. **Checkpoint de Joyas Emergentes:** El sistema reserva cupos para artículos de 2025/2026 y consulta al investigador si desea incorporar preprints recientes sin citas.
-7. **Generación del entregable:** Redacción del reporte estructurado con enlaces DOI institucionales.
-
-### 2. `literature-harvester` (Extracción y Procesamiento)
-* **OpenAlex API:** Descarga metadatos completos, títulos y abstracts reconstruidos de editoriales como IEEE, ACM, Springer, Elsevier y Nature sin requerir claves de pago.
-* **Scopus & Web of Science Importer:** Si tienes acceso universitario, puedes exportar búsquedas en CSV o BibTeX y colocarlas en `investigations/<tema>/raw/`; el script `import_scopus_wos.py` las procesa directamente.
-* **Ranking Multidimensional:** Identifica artículos canónicos consolidados y Joyas Emergentes de 2025/2026.
-
-### 3. `paper-validator` (Validador de Ideas & Reviewer 2 Adversarial)
-* **Entrevista de Admisión Crítica (*Grill the Idea*):** Antes de calificar la idea, el agente formula entre 3 y 5 preguntas incisivas sobre el delta metodológico, los datasets, los baselines del SOTA (2024–2026), ablaciones y el venue deseado.
-* **Auditoría Adversarial:** Compara la idea del paper contra el corpus recopilado calculando solapamiento semántico conceptual (soporta español e inglés).
-* **Clasificación Categórica de Cuartiles y Venues:** Determina si la propuesta califica para Revista JCR/Scopus Q1, Q2, Q3 o Conferencia CORE A*, A, B.
-* **Cálculo de Probabilidad:** Estima las probabilidades porcentuales reales de aceptación en revistas Q1 vs Q2.
-* **Planes de Pivote:** Genera 3 opciones estratégicas (Complejidad/Escala, Estudio de Ablación o Frontera de Pareto/Eficiencia) para elevar una idea con riesgo de rechazo (*Desk Reject*) a nivel Q1.
-
----
-
 ## Instalación y Configuración
 
+El entorno utiliza [`uv`](https://github.com/astral-sh/uv) para una gestión de dependencias rápida y reproducible:
+
 ```bash
-# Entrar al repositorio
+# 1. Clonar y entrar al repositorio
 cd ~/Documents/PROFESIONAL/archi-harness
 
-# Crear entorno virtual con uv e instalar dependencias
+# 2. Crear entorno virtual con uv e instalar dependencias
 uv venv
 source .venv/bin/activate
 uv pip install -e .
@@ -81,19 +61,77 @@ uv pip install -e .
 
 ---
 
-## Guía de Uso Rápido
+## 📚 Guía Exhaustiva de Funcionalidades y Modo de Uso
 
-### A. Ejecutar una Búsqueda Sistematizada (SLR)
+El arnés dispone de **6 funcionalidades nucleares**. A continuación se detalla el propósito de cada una, sus comandos y ejemplos prácticos:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        FLUJOS Y FUNCIONALIDADES                        │
+├───────────────────────────────────┬────────────────────────────────────┤
+│ 1. search_openalex.py             │ Búsqueda abierta sin API keys      │
+│ 2. import_scopus_wos.py           │ Ingesta de Scopus/WoS universitario│
+│ 3. rank_and_filter.py             │ Ranking H5-index y Joyas 2025/2026 │
+│ 4. systematic-slr                 │ Orquestación guiada en 7 pasos     │
+│ 5. Entrevista de Admisión         │ "Grill the Idea" (6 dimensiones)   │
+│ 6. assess_novelty.py              │ Reviewer 2 & Estimador de Cuartil  │
+└───────────────────────────────────┴────────────────────────────────────┘
+```
+
+---
+
+### Funcionalidad 1: Búsqueda Abierta de Literatura (`search_openalex.py`)
+
+* **Propósito:** Consulta la API abierta de OpenAlex para buscar literatura indexada de IEEE, ACM, Springer, Elsevier, Nature y Wiley **sin requerir claves de API de pago ni registros**. Reconstruye el texto completo del abstract, extrae DOIs, autores, año, citas y detecta si es de acceso abierto o de pago.
+* **Argumentos:**
+  * `--include`: Palabras clave atómicas a incluir (ej: `quantum graph routing`).
+  * `--exclude`: Palabras clave negativas para purgar disciplinas ajenas (ej: `mechanics optics`).
+  * `--years`: Ventana temporal hacia atrás (por defecto `3`, ampliable a `5`).
+  * `--max`: Cantidad máxima de artículos a recuperar (por defecto `30`).
+  * `--output`: Archivo JSON donde se guardarán los resultados.
+
+* **Ejemplo de Uso:**
 ```bash
-# 1. Extraer artículos de repositorios abiertos
 python skills/literature-harvester/scripts/search_openalex.py \
-    --include quantum graph routing \
+    --include "oriented bounding box" vehicle traffic edge \
     --exclude mechanics optics \
     --years 3 \
     --max 30 \
     --output investigations/mi_proyecto/raw/articles.json
+```
 
-# 2. Generar ranking con H5-index y Joyas Emergentes
+---
+
+### Funcionalidad 2: Ingesta de Scopus y Web of Science (`import_scopus_wos.py`)
+
+* **Propósito:** Si cuentas con acceso institucional a través de tu universidad a **Scopus** o **Web of Science**, puedes realizar una búsqueda avanzada en sus portales web, descargar el archivo de exportación en formato **CSV o BibTeX (`.bib`)** y normalizarlo automáticamente al esquema unificado del arnés.
+* **Argumentos:**
+  * `--input`: Ruta al archivo `.csv` o `.bib` exportado.
+  * `--output`: Ruta al archivo `.json` resultante normalizado.
+
+* **Ejemplo de Uso:**
+```bash
+python skills/literature-harvester/scripts/import_scopus_wos.py \
+    --input investigations/mi_proyecto/raw/scopus_export.csv \
+    --output investigations/mi_proyecto/raw/articles.json
+```
+
+---
+
+### Funcionalidad 3: Ranking Multidimensional y Detección de Joyas Emergentes (`rank_and_filter.py`)
+
+* **Propósito:** Aplica la fórmula de clasificación para ordenar los artículos según su relevancia científica real:
+  $$\text{Score} = (\text{Citas Anuales} \times 0.45) + (\text{H5-Index} \times 0.35) + \text{Bonus Cuartil (Q1/Q2)}$$
+  Automáticamente aparta y destaca **Joyas Emergentes** (artículos de 2025 o 2026 que tienen pocas o 0 citas por su recencia pero alta afinidad técnica).
+* **Argumentos:**
+  * `--input`: Archivo JSON con los artículos extraídos.
+  * `--top`: Cantidad de artículos finales a retener en la tabla principal (por defecto `10`).
+  * `--emerging`: Número de cupos reservados para Joyas Emergentes (por defecto `2`).
+  * `--format`: Formato de salida (`markdown` para tablas legibles o `json` para pipelines).
+  * `--output`: Ruta donde guardar el archivo (opcional).
+
+* **Ejemplo de Uso:**
+```bash
 python skills/literature-harvester/scripts/rank_and_filter.py \
     --input investigations/mi_proyecto/raw/articles.json \
     --top 10 \
@@ -102,17 +140,80 @@ python skills/literature-harvester/scripts/rank_and_filter.py \
     --output investigations/mi_proyecto/summary_table.md
 ```
 
-### B. Importar datos exportados de Scopus / Web of Science (Universidad)
-```bash
-python skills/literature-harvester/scripts/import_scopus_wos.py \
-    --input investigations/mi_proyecto/raw/scopus_export.csv \
-    --output investigations/mi_proyecto/raw/articles.json
+* **Salida Típica en Markdown:**
+```markdown
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Tipo | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | Edge ML Technique for Smart Traffic... | 2024 | IEEE Access | Q2 | 95 | 88 (29.3) | SOTA Benchmark | 🔓 Open Access | [10.1109/...](...) |
+| 2 | A Cascaded Framework for Vehicle...   | 2026 | Electronics | Q2 | 80 | 1 (1.0) | 💎 Joya Reciente | 🔒 Paywall (Univ) | [10.3390/...](...) |
 ```
 
-### C. Validar una Idea de Paper contra el Estado del Arte
+---
+
+### Funcionalidad 4: Orquestación Guiada del Estado del Arte (`systematic-slr`)
+
+* **Propósito:** Orquesta el protocolo de 7 pasos a través del agente interactivo, evitando que se omitan pasos o se improvise con búsquedas superficiales.
+* **Puntos de Control (*Checkpoints*):**
+  * **Checkpoint 1:** El agente descompone la idea en términos atómicos en inglés y define los términos `NOT`. Te presenta la ecuación para que la valides antes de realizar la descarga.
+  * **Checkpoint 2:** Tras el ranking, te muestra las Joyas Emergentes detectadas y te consulta si deseas inyectar manualmente algún paper o preprint reciente que conozcas.
+* **Cómo Usarlo en el Chat del Agente:**
+  Basta con pedirle al agente:
+  > *"Quiero hacer el estado del arte sobre detección de vehículos orientados en edge computing para una revista Q3"*.
+  El agente activará automáticamente `skills/systematic-slr/SKILL.md` y te guiará paso a paso.
+
+---
+
+### Funcionalidad 5: Entrevista de Admisión Crítica (*Grill the Idea*)
+
+* **Propósito:** Antes de evaluar una idea de paper, el arnés somete al investigador a un interrogatorio estructurado en **6 dimensiones críticas** basado en [`intake_rubric.md`](skills/paper-validator/references/intake_rubric.md):
+  1. **Delta Metodológico:** ¿Qué modificación técnica o matemática real se propone frente a la librería estándar?
+  2. **Datasets y Disponibilidad:** ¿Son benchmarks públicos estándar o datos privados? ¿Habrá código abierto?
+  3. **Baselines del SOTA (2024–2026):** ¿Contra qué modelos recientes se compara? (Prohibido comparar solo contra algoritmos de hace 5+ años).
+  4. **Hipótesis Mecanicista:** ¿Por qué teóricamente este método debería superar a los existentes?
+  5. **Ablaciones y Significancia:** ¿Se medirá el impacto de cada módulo y pruebas estadísticas ($p < 0.05$)?
+  6. **Venue Objetivo:** ¿Revista JCR/Scopus Q1, Q2, Q3 o Conferencia CORE A*/A/B?
+
+* **Cómo Usarlo en el Chat del Agente:**
+  Comparte tu idea o abstract preliminar y el agente activará la entrevista de admisión:
+  > *"Valida esta idea de paper: [pega tu abstract o idea]"*.
+
+---
+
+### Funcionalidad 6: Validador Adversarial & Estimador de Cuartil (`assess_novelty.py`)
+
+* **Propósito:** Compara la idea del investigador frente al corpus recopilado de artículos del estado del arte. Realiza tokenización y normalización bilingüe (ES $\leftrightarrow$ EN), calcula el solapamiento conceptual, detecta obras competidoras (*Prior Art*), estima las probabilidades de aceptación en revistas Q1 vs Q2 vs Q3 y formula **3 planes de pivote estratégico**.
+* **Argumentos:**
+  * `--idea`: Texto de la idea, abstract o ruta a un archivo `.txt`/`.md`/`.tex`.
+  * `--literature`: Archivo JSON con los artículos del estado del arte recopilados.
+  * `--output`: Ruta donde guardar el reporte formal en Markdown.
+
+* **Ejemplo de Uso:**
 ```bash
 python skills/paper-validator/scripts/assess_novelty.py \
-    --idea "Proponemos un algoritmo híbrido cuántico en grafos para ruteo de vehículos con atención neuronal" \
+    --idea "Fine-Tuning YOLO11n-OBB for Oriented Vehicle Detection in Peruvian Traffic Scenes: Data Scaling and Edge Benchmarking on Raspberry Pi 4" \
     --literature investigations/mi_proyecto/raw/articles.json \
     --output investigations/mi_proyecto/paper_validation_dictamen.md
+```
+
+* **Salida Generada:**
+  * **Diagnóstico Global:** `Viable para Revista Q2 / Q3`
+  * **Probabilidades Estimadas:** Q1: 45% | Q2: 75% | Q3: 90%
+  * **Prior Art Crítico:** Lista de los papers más cercanos con porcentaje de solapamiento.
+  * **Venues Recomendados:** Revistas específicas que publican artículos en esa misma línea temática.
+  * **Planes de Pivote:** Recomendaciones para superar la barrera del *Reviewer 2* (Pivote de Baselines, Estudio de Ablación o Frontera de Pareto/Eficiencia).
+
+---
+
+## Estructura de Carpetas de una Investigación
+
+Cada proyecto de investigación vive de forma autocontenida y reproducible dentro de `investigations/<nombre_proyecto>/`:
+
+```text
+investigations/mi_proyecto/
+├── raw/
+│   ├── articles.json                 # Corpus de artículos descargados (OpenAlex o Scopus)
+│   └── scopus_export.csv             # (Opcional) Exportación institucional
+├── summary_table.md                  # Tabla Top 10 con H5-index y Joyas Emergentes
+├── paper_validation_dictamen.md      # Dictamen adversarial y clasificación de cuartiles
+└── report.md                         # Estado del arte y reporte final sintetizado
 ```
