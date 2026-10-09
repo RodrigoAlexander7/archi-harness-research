@@ -21,25 +21,19 @@ archi-harness/
 │       └── paper_validation_report_template.md # Plantilla formal de dictamen y pivotes
 ├── skills/
 │   ├── systematic-slr/                       # Orquestador del protocolo de 7 pasos (SLR)
-│   │   └── SKILL.md                          # Flujo procedimental y checkpoints interactivos
-│   ├── literature-harvester/                 # Extracción y procesamiento de literatura
-│   │   ├── SKILL.md
-│   │   └── scripts/
-│   │       ├── search_openalex.py            # Búsqueda abierta (IEEE, ACM, Springer) sin API key
-│   │       ├── import_scopus_wos.py          # Ingesta de CSV/BibTeX con acceso universitario
-│   │       └── rank_and_filter.py            # Ranking por H5-index, citas anuales y Joyas Emergentes
-│   └── paper-validator/                      # Validador de ideas & Reviewer 2 adversarial
-│       ├── SKILL.md
-│       ├── references/
-│       │   └── intake_rubric.md              # Rúbrica de 6 dimensiones y matriz de cuartiles
-│       └── scripts/
-│           └── assess_novelty.py             # Detección de solapamiento bilingüe y plan de pivote
+│   ├── literature-harvester/                 # Extracción con OpenAlex y Scopus/WoS
+│   ├── paper-validator/                      # Validador de ideas & Reviewer 2 adversarial
+│   ├── paper-lookup/                         # Conector multi-API a 18 bases académicas (K-Dense)
+│   ├── citation-management/                  # Conversión DOI a BibTeX y validación de citas (K-Dense)
+│   ├── peer-review/                          # Auditoría formal de manuscritos según directrices (K-Dense)
+│   ├── academic-plotting/                    # Generador de gráficas científicas para IEEE/Springer (Orchestra)
+│   ├── ml-paper-writing/                     # Guías y estructura para redacción de papers de ML (Orchestra)
+│   └── last30days/                           # Rastreador de tendencias y pulso comunitario en Reddit/HN/X (mvanhorn)
 ├── data/
 │   └── venues_hindex.json                    # Base curada de cuartiles Q1/Q2/Q3 y H5 de journals top
-├── investigations/                           # Espacio de trabajo de proyectos e investigaciones
-│   ├── demo_quantum/                         # Ejemplo de demostración validado
-│   └── yolo_peruvian_traffic/                # Ejemplo de caso de estudio en Edge AI
-├── pyproject.toml                            # Gestión de dependencias limpias con uv
+├── investigations/                           # Proyectos e investigaciones en curso
+├── outputs/                                  # Entregables con trazabilidad en fases (Fase 1 a 4)
+├── pyproject.toml
 └── README.md
 ```
 

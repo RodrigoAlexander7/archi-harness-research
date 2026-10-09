@@ -1,35 +1,34 @@
 # Regla 00: Enrutador del Harness de Investigación
 
-Este arnés orquesta la investigación científica rigurosa y la validación de ideas de investigación enfocadas en **revistas indexadas JCR / Scopus (Q1/Q2)** en ingeniería y ciencias.
-
-## 1. Clasificación de la Intención del Investigador
-
-Al recibir cualquier solicitud, clasifica la tarea en uno de los siguientes flujos de trabajo:
-
-| Intención | Descripción | Skill / Script Principal | Plantilla de Salida |
-| :--- | :--- | :--- | :--- |
-| **`SLR_DISCOVERY`** | Búsqueda y estado del arte sistematizado desde cero | `skills/systematic-slr` (Orquestador 7 Pasos) | `slr_report_template.md` |
-| **`IMPORT_INSTITUTIONAL`** | Procesar datos exportados de Scopus o Web of Science | `skills/literature-harvester/scripts/import_scopus_wos.py` | `slr_report_template.md` |
-| **`PAPER_VALIDATION`** | Evaluar una idea, hipótesis o abstract para revista Q1/Q2 | `skills/paper-validator/scripts/assess_novelty.py` | `paper_validation_report_template.md` |
-| **`RANK_AND_FILTER`** | Filtrar por palabras negativas y ordenar por H-index/citas | `skills/literature-harvester/scripts/rank_and_filter.py` | Tabla Top 5-10 |
+Este arnés orquesta la investigación científica rigurosa y la validación de ideas de investigación enfocadas en **revistas indexadas JCR / Scopus (Q1/Q2/Q3)** en ingeniería y ciencias.
 
 ---
 
-## 2. Protocolo de Ejecución
+## 1. Clasificación de la Intención del Investigador
 
-1. **Si el usuario quiere construir el estado del arte de un tema:**
-   - Sigue estrictamente la regla `01-systematic-literature-review.md`.
-   - Formula palabras clave booleanas atómicas (ej: `"quantum" AND "graph"`). Nunca uses lenguaje natural como consulta.
-   - Aplica ventana de 3 años (o 5 si hay escasez).
-   - Aplica filtros negativos (`NOT`).
-   - Descarga metadatos completos (títulos y abstracts).
-   - Clasifica por impacto y prestigio del journal (H-index / Cuartiles).
+Al recibir cualquier solicitud, clasifica la tarea y activa la skill o script correspondiente:
 
-2. **Si el usuario proporciona un archivo de Scopus o Web of Science:**
-   - Ubica el archivo en `investigations/<nombre_proyecto>/raw/`.
-   - Ejecuta `import_scopus_wos.py` para normalizar los metadatos y evaluar los abstracts.
+| Intención | Descripción | Skill / Herramienta Principal | Origen |
+| :--- | :--- | :--- | :--- |
+| **`SLR_DISCOVERY`** | Búsqueda y estado del arte sistematizado en 7 pasos | `skills/systematic-slr` (Guía paso a paso) | Nativa |
+| **`PAPER_VALIDATION`** | Evaluar idea de paper con entrevista y Reviewer 2 | `skills/paper-validator` (Intake + Cuartiles) | Nativa |
+| **`MULTI_SCHOLAR_LOOKUP`** | Búsqueda en 18 APIs académicas (PubMed, arXiv, Crossref) | `skills/paper-lookup` | K-Dense (`scientific-agent-skills`) |
+| **`BIBTEX_MANAGEMENT`** | Conversión DOI a BibTeX y validación de referencias | `skills/citation-management` | K-Dense (`scientific-agent-skills`) |
+| **`MANUSCRIPT_AUDIT`** | Revisión editorial exhaustiva de borrador completo | `skills/peer-review` | K-Dense (`scientific-agent-skills`) |
+| **`ACADEMIC_PLOTTING`** | Gráficas y curvas en Python con estándar IEEE/Springer | `skills/academic-plotting` | Orchestra (`AI-research-SKILLs`) |
+| **`PAPER_WRITING_GUIDE`** | Guía de redacción de papers de ML y sistemas para journals | `skills/ml-paper-writing` | Orchestra (`AI-research-SKILLs`) |
+| **`COMMUNITY_PULSE`** | Rastreo de tendencias recientes en Reddit, HN y X | `skills/last30days` | mvanhorn (`last30days-skill`) |
+| **`IMPORT_INSTITUTIONAL`** | Ingesta de exportaciones CSV/BibTeX de Scopus/WoS | `skills/literature-harvester/scripts/import_scopus_wos.py` | Nativa |
 
-3. **Si el usuario quiere validar una idea de paper:**
-   - Sigue estrictamente la regla `02-paper-idea-validator.md`.
-   - Extrae el delta técnico, baselines obligatorios y riesgos de rechazo (*Reviewer 2*).
-   - Clasifica la factibilidad en JCR/Scopus Q1/Q2 y propone pivotes estratégicos.
+---
+
+## 2. Protocolo de Ejecución y Trazabilidad
+
+1. **Estado del Arte Sistematizado (SLR):**
+   - Siempre ejecuta con trazabilidad explícita: genera `fase1_identificacion_sin_filtrar.md`, `fase2_cribado_exclusiones.md` y `summary_table.md` antes del reporte final.
+2. **Validación de Ideas (Reviewer 2):**
+   - Aplica primero la entrevista de admisión de 6 dimensiones (`skills/paper-validator/references/intake_rubric.md`).
+   - Compara con el estado del arte y emite veredicto transparente de cuartiles.
+3. **Escritura y Gráficos:**
+   - Para las figuras del paper (curvas de scaling, matrices de confusión), utiliza los estilos editoriales de `skills/academic-plotting`.
+   - Para generar las referencias bibliográficas sin errores, utiliza `skills/citation-management`.

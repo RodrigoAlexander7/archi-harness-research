@@ -1,13 +1,16 @@
 [project]
 name = "archi-research-harness"
-version = "0.1.0"
-description = "Harness agéntico para revisión sistemática de literatura y validación estratégica de ideas de papers (JCR/Scopus Q1/Q2)"
+version = "0.2.0"
+description = "Harness agéntico de investigación con skills comunitarias validadas (K-Dense, Orchestra Research, last30days)"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "requests>=2.31.0",
     "pydantic>=2.6.0",
     "rich>=13.7.0",
+    "matplotlib>=3.8.0",
+    "numpy>=1.24.0",
+    "bibtexparser>=2.0.0",
 ]
 
 [build-system]
