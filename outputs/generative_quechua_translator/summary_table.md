@@ -1,0 +1,12 @@
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Tipo | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | Indigenous peoples and artificial intelligence: A systematic revi... | 2024 | Desconocido | No rankeado en DB local | 25 | 7 (2.33) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.31235/osf.io/6hrqj) |
+| 2 | Resource Asymmetry in Multilingual NLP: A Comprehensive Review an... | 2025 | Journal of Computer and Commun | No rankeado en DB local | 25 | 4 (2.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.4236/jcc.2025.137002) |
+| 3 | Multidimensional Affective Analysis for Low-Resource Languages: A... | 2023 | Cognitive Computation | No rankeado en DB local | 25 | 8 (2.0) | SOTA Benchmark | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1007/s12559-023-10165-0) |
+| 4 | Foundation Models for Low-Resource Language Education (Vision Pap... | 2025 | Qeios | No rankeado en DB local | 25 | 2 (1.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.32388/iqu339) |
+| 5 | Language contact: Bridging the gap between individual interaction... | 2023 | Leiden Repository (Leiden Univ | No rankeado en DB local | 25 | 2 (0.5) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.5281/zenodo.8269091) |
+| 6 | Foundation Models for Low-Resource Language Education (Vision Pap... | 2024 | arXiv (Cornell University) | No rankeado en DB local | 25 | 1 (0.33) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.48550/arxiv.2412.04774) |
+| 7 | M-GATE: Multilingual Grammar, Accuracy in Translation, and Effici... | 2026 | arXiv (Cornell University) | No rankeado en DB local | 25 | 0 (0.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.48550/arxiv.2608.03803) |
+| 8 | Quantifying the Gaps: A Systematic Taxonomy of Bias and Imbalance... | 2026 | HAL (Le Centre pour la Communi | No rankeado en DB local | 25 | 0 (0.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.13140/rg.2.2.27046.59201) |
+| 9 | Data colonialism and indigenous languages in AI: a critical revie... | 2026 | AI & Society | No rankeado en DB local | 25 | 2 (2.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.1007/s00146-026-03091-w) |
+| 10 | AI-Driven Generation of Old English: A Framework for Low-Resource... | 2026 | Big Data and Cognitive Computi | No rankeado en DB local | 25 | 0 (0.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.3390/bdcc10050145) |
