@@ -1,0 +1,12 @@
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Categoría / Tag | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | Real-Time Object Detection and Classification using YOLO for... | 2025 | International Symposium ELMA | No rankeado en DB local | 25 | 7 (3.5) | `🎯 Semilla de Anclaje` | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1109/elmar66948.2025.11193980) |
+| 2 | FPGA-Based Real-Time Object Detection and Classification Sys... | 2024 | IEEE Access | Q2 | 95 | 90 (30.0) | `⚙️ Validación Empírica` | 🔓 Open Access | [Enlace](https://doi.org/10.1109/access.2024.3404623) |
+| 3 | RFCS-YOLO: Target Detection Algorithm in Adverse Weather Con... | 2025 | Sensors | Q2 | 120 | 7 (3.5) | `⚙️ Validación Empírica` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/s25030912) |
+| 4 | Vehicle Detection on Occupancy Grid Maps: Comparison of Five... | 2023 | Sensors | Q2 | 120 | 6 (1.5) | `⚙️ Validación Empírica` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/s23031613) |
+| 5 | ClearSight-RS: A YOLOv5-Based Network with Dynamic Enhanceme... | 2025 | Sensors | Q2 | 120 | 2 (1.0) | `⚙️ Validación Empírica` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/s26010117) |
+| 6 | Dynamic Obstacle Perception Technology for UAVs Based on LiD... | 2025 | Drones | Q1 | 75 | 6 (3.0) | `⚙️ Validación Empírica` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/drones9080540) |
+| 7 | R-YOLOv5: A Lightweight Rotational Object Detection Algorith... | 2023 | IEEE Access | Q2 | 95 | 37 (9.25) | `⚙️ Validación Empírica` | 🔓 Open Access | [Enlace](https://doi.org/10.1109/access.2023.3262601) |
+| 8 | OrientedDiffDet: Diffusion Model for Oriented Object Detecti... | 2024 | Applied Sciences | Q2 | 110 | 11 (3.67) | `⚙️ Validación Empírica` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/app14052000) |
+| 9 | Robust real-time object detection for use in unmanned aerial... | 2026 | Brno University of Technolog | No rankeado en DB local | 25 | 0 (0.0) | `💎 Joya Reciente` | 🔓 Open Access | N/A |
+| 10 | Effectiveness of YOLO variants for small object detection in... | 2025 | Scientific Reports | Q1 | 215 | 3 (1.5) | `💎 Joya Reciente` | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-025-28755-3) |

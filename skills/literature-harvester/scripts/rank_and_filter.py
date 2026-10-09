@@ -15,28 +15,28 @@ from pathlib import Path
 from typing import Any, Dict, List, Set
 
 
-def is_survey_paper(title: str) -> bool:
+def is_survey_paper(title: str, abstract: str = "") -> bool:
     """Detecta si un artículo es un macro-survey o revisión bibliográfica."""
-    t_lower = title.lower()
-    return any(w in t_lower for w in ["survey", "review", "overview", "a decadal review", "state of the art review"])
+    t_lower = (title + " " + abstract[:200]).lower()
+    return any(w in t_lower for w in ["survey", "literature review", "systematic review", "a decadal review", "state of the art review", "scoping review"])
 
 
-def has_hardware_benchmark(text: str) -> bool:
-    """Detecta si el artículo reporta métricas experimentales en hardware embebido/edge."""
-    t_lower = text.lower()
-    kws = [
-        "fps", "latency", "raspberry", "fpga", "jetson", "kria", "ncnn",
-        "int8", "quantization", "power consumption", "watt", "throughput",
-        "embedded system", "real-time edge", "cortex-a"
+def is_empirical_paper(title: str, abstract: str = "") -> bool:
+    """Detecta si el artículo reporta validación empírica, experimentos o benchmarks cuantificables."""
+    t_lower = (title + " " + abstract).lower()
+    empirical_indicators = [
+        "benchmark", "experimental", "experiment", "empirical", "dataset",
+        "ablation", "comparative study", "testbed", "metrics", "case study",
+        "real-world", "prototype", "deployed", "measurements"
     ]
-    return any(kw in t_lower for kw in kws)
+    return any(kw in t_lower for kw in empirical_indicators)
 
 
 def rank_articles(
     articles: List[Dict[str, Any]],
     top_n: int = 10,
     emerging_count: int = 2,
-    max_surveys: int = 2
+    max_surveys: int = 1
 ) -> Dict[str, Any]:
     current_year = 2026
 
@@ -52,28 +52,33 @@ def rank_articles(
         quartile = str(art.get("quartile", "")).upper()
         q_bonus = 25 if "Q1" in quartile else (15 if "Q2" in quartile else 5)
 
-        # Bonificación empírica por hardware
+        # Bonificación empírica general (aplica a cualquier ciencia)
         text_full = art.get("title", "") + " " + art.get("abstract", "")
-        is_hw = has_hardware_benchmark(text_full)
-        hw_bonus = 25 if is_hw else 0
-        is_survey = is_survey_paper(art.get("title", ""))
+        is_emp = is_empirical_paper(art.get("title", ""), art.get("abstract", ""))
+        emp_bonus = 15 if is_emp else 0
+        is_survey = is_survey_paper(art.get("title", ""), art.get("abstract", ""))
 
-        # Penalización suave a macro-surveys para evitar que desplacen papers empíricos
-        survey_penalty = -15 if is_survey else 0
+        # Afinidad semántica si viene calculada del harvester iterativo (escala 0-10 -> ponderado)
+        affinity = art.get("affinity_score", 7.0)
+        affinity_component = affinity * 4.0  # hasta 40 pts
+
+        # Penalización a macro-surveys para evitar que desplacen papers empíricos
+        survey_penalty = -20 if is_survey else 0
 
         # Score ponderado
         composite_score = round(
-            (annual_cites * 0.40) +
-            (h5 * 0.30) +
+            (annual_cites * 0.35) +
+            (h5 * 0.25) +
             q_bonus +
-            hw_bonus +
+            emp_bonus +
+            affinity_component +
             survey_penalty,
             2
         )
 
         art["annual_citations"] = round(annual_cites, 2)
         art["composite_score"] = composite_score
-        art["is_hardware_benchmark"] = is_hw
+        art["is_empirical"] = is_emp
         art["is_survey"] = is_survey
 
     # 2. Separar artículos semilla (Máxima prioridad de anclaje)
@@ -86,9 +91,9 @@ def rank_articles(
         a for a in remaining_pool
         if a.get("year", 0) >= (current_year - 1) and a.get("citations", 0) <= 8 and not a.get("is_survey")
     ]
-    # Priorizar joyas con hardware benchmark o alto H5
+    # Priorizar joyas con validación empírica o alto H5
     emerging_candidates.sort(
-        key=lambda x: (x.get("is_hardware_benchmark", False), x.get("year", 0), x.get("h5_index", 0)),
+        key=lambda x: (x.get("is_empirical", False), x.get("year", 0), x.get("h5_index", 0)),
         reverse=True
     )
     selected_emerging = emerging_candidates[:emerging_count]
@@ -121,12 +126,12 @@ def rank_articles(
             a["tag"] = "🎯 Semilla de Anclaje"
         elif (a.get("id") or a.get("doi")) in emerging_ids:
             a["tag"] = "💎 Joya Reciente"
-        elif a.get("is_hardware_benchmark"):
-            a["tag"] = "⚙️ Benchmark Empírico"
+        elif a.get("is_empirical"):
+            a["tag"] = "⚙️ Validación Empírica"
         elif a.get("is_survey"):
             a["tag"] = "📖 SOTA Survey"
         else:
-            a["tag"] = "🔬 SOTA Benchmark"
+            a["tag"] = "🔬 SOTA Metodológico"
 
     return {
         "total_analyzed": len(articles),
