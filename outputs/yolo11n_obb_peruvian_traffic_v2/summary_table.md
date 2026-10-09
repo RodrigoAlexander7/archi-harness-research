@@ -1,0 +1,12 @@
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Tipo | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | YOLOv1 to v8: Unveiling Each Variant–A Comprehensive Review of YO... | 2024 | IEEE Access | No rankeado en DB local | 25 | 471 (157.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1109/access.2024.3378568) |
+| 2 | YOLO advances to its genesis: a decadal and comprehensive review ... | 2025 | Artificial Intelligence Review | No rankeado en DB local | 25 | 301 (150.5) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1007/s10462-025-11253-3) |
+| 3 | Statistical Analysis of Design Aspects of Various YOLO-Based Deep... | 2023 | International Journal of Compu | No rankeado en DB local | 25 | 227 (56.75) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1007/s44196-023-00302-w) |
+| 4 | YOLO-Based UAV Technology: A Review of the Research and Its Appli... | 2023 | Drones | No rankeado en DB local | 25 | 218 (54.5) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.3390/drones7030190) |
+| 5 | YOLO Object Detection for Real-Time Fabric Defect Inspection in t... | 2025 | Sensors | No rankeado en DB local | 25 | 106 (53.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.3390/s25072270) |
+| 6 | Edge ML Technique for Smart Traffic Management in Intelligent Tra... | 2024 | IEEE Access | No rankeado en DB local | 25 | 88 (29.33) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1109/access.2024.3365930) |
+| 7 | Enhancing automated vehicle identification by integrating YOLO v8... | 2024 | Scientific Reports | No rankeado en DB local | 25 | 82 (27.33) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-024-65272-1) |
+| 8 | A Review of YOLO Algorithm and Its Applications in Autonomous Dri... | 2025 | IEEE Access | No rankeado en DB local | 25 | 44 (22.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1109/access.2025.3573376) |
+| 9 | YOLO-LIO: A Real-Time Enhanced Detection and Integrated Traffic M... | 2026 | Algorithms | No rankeado en DB local | 25 | 4 (4.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.3390/a19010042) |
+| 10 | DMS-YOLO: Small target detection algorithm based on YOLOv11 | 2026 | PLoS ONE | No rankeado en DB local | 25 | 3 (3.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.1371/journal.pone.0341991) |
