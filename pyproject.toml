@@ -3,7 +3,7 @@ name = "archi-research-harness"
 version = "0.3.0"
 description = "Harness agéntico de investigación con skills comunitarias validadas (K-Dense, Orchestra Research, GPT-Researcher, last30days)"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "requests>=2.31.0",
     "pydantic>=2.6.0",
