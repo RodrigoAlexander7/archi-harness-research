@@ -1,0 +1,12 @@
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Categoría / Tag | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | Real-Time Object Detection and Classification using YOLO for... | 2025 | International Symposium ELMA | No rankeado en DB local | 25 | 7 (3.5) | `🎯 Semilla de Anclaje` | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1109/elmar66948.2025.11193980) |
+| 2 | The YOLO Framework: A Comprehensive Review of Evolution, App... | 2024 | Computers | Q1 | 68 | 492 (164.0) | `📖 SOTA Survey` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/computers13120336) |
+| 3 | Insights into vehicle conflicts based on traffic flow dynami... | 2024 | Scientific Reports | Q1 | 215 | 36 (12.0) | `🔬 SOTA Benchmark` | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-023-50017-3) |
+| 4 | Potholes and traffic signs detection by classifier with visi... | 2024 | Scientific Reports | Q1 | 215 | 30 (10.0) | `🔬 SOTA Benchmark` | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-024-52426-4) |
+| 5 | SOD-YOLOv8—Enhancing YOLOv8 for Small Object Detection in Ae... | 2024 | Sensors | Q2 | 120 | 111 (37.0) | `⚙️ Benchmark Empírico` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/s24196209) |
+| 6 | Consistent vehicle trajectory extraction from aerial recordi... | 2025 | Scientific Reports | Q1 | 215 | 4 (2.0) | `🔬 SOTA Benchmark` | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-025-12301-2) |
+| 7 | HIT-UAV: A high-altitude infrared thermal dataset for Unmann... | 2023 | Scientific Data | Q1 | 120 | 288 (72.0) | `🔬 SOTA Benchmark` | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41597-023-02066-6) |
+| 8 | TSR-YOLO: A Chinese Traffic Sign Recognition Algorithm for I... | 2023 | Sensors | Q2 | 120 | 61 (15.25) | `⚙️ Benchmark Empírico` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/s23020749) |
+| 9 | YOLO-LIO: A Real-Time Enhanced Detection and Integrated Traf... | 2026 | Algorithms | Q2 | 45 | 4 (4.0) | `💎 Joya Reciente` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/a19010042) |
+| 10 | Deep Learning-Based LiDAR Perception for Traffic Cone Detect... | 2026 | Vehicles | Q2 | 35 | 0 (0.0) | `💎 Joya Reciente` | 🔓 Open Access | [Enlace](https://doi.org/10.3390/vehicles8100238) |

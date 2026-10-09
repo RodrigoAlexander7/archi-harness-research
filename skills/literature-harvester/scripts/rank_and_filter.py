@@ -1,24 +1,46 @@
 #!/usr/bin/env python3
 """
 rank_and_filter.py
-Ejecuta el ranking multidimensional (Impacto de citas anualizadas + Prestigio H5-index / Cuartil),
-aplica el corte a Top N artículos y detecta Joyas Emergentes (papers 2025-2026).
+Ejecuta el ranking multidimensional (Impacto bibliométrico + Bonificación Empírica + Joyas Emergentes),
+prioriza artículos semilla (--seed), limita la cuota de surveys/reviews (--max-surveys) y aplica bonificación
+a investigaciones con mediciones en hardware real (FPS, latencia, FPGA, Raspberry Pi, etc.).
 """
 
-import sys
-import json
+from __future__ import annotations
+
 import argparse
+import json
+import sys
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List, Set
+
+
+def is_survey_paper(title: str) -> bool:
+    """Detecta si un artículo es un macro-survey o revisión bibliográfica."""
+    t_lower = title.lower()
+    return any(w in t_lower for w in ["survey", "review", "overview", "a decadal review", "state of the art review"])
+
+
+def has_hardware_benchmark(text: str) -> bool:
+    """Detecta si el artículo reporta métricas experimentales en hardware embebido/edge."""
+    t_lower = text.lower()
+    kws = [
+        "fps", "latency", "raspberry", "fpga", "jetson", "kria", "ncnn",
+        "int8", "quantization", "power consumption", "watt", "throughput",
+        "embedded system", "real-time edge", "cortex-a"
+    ]
+    return any(kw in t_lower for kw in kws)
+
 
 def rank_articles(
     articles: List[Dict[str, Any]],
     top_n: int = 10,
-    emerging_count: int = 2
+    emerging_count: int = 2,
+    max_surveys: int = 2
 ) -> Dict[str, Any]:
     current_year = 2026
 
-    # Calcular puntajes detallados
+    # 1. Calcular puntajes y atributos
     for art in articles:
         year = art.get("year", current_year)
         cites = art.get("citations", 0)
@@ -30,78 +52,127 @@ def rank_articles(
         quartile = str(art.get("quartile", "")).upper()
         q_bonus = 25 if "Q1" in quartile else (15 if "Q2" in quartile else 5)
 
+        # Bonificación empírica por hardware
+        text_full = art.get("title", "") + " " + art.get("abstract", "")
+        is_hw = has_hardware_benchmark(text_full)
+        hw_bonus = 25 if is_hw else 0
+        is_survey = is_survey_paper(art.get("title", ""))
+
+        # Penalización suave a macro-surveys para evitar que desplacen papers empíricos
+        survey_penalty = -15 if is_survey else 0
+
         # Score ponderado
         composite_score = round(
-            (annual_cites * 0.45) + 
-            (h5 * 0.35) + 
-            q_bonus, 
+            (annual_cites * 0.40) +
+            (h5 * 0.30) +
+            q_bonus +
+            hw_bonus +
+            survey_penalty,
             2
         )
+
         art["annual_citations"] = round(annual_cites, 2)
         art["composite_score"] = composite_score
+        art["is_hardware_benchmark"] = is_hw
+        art["is_survey"] = is_survey
 
-    # Separar candidatos a joyas emergentes (año >= current_year - 1 y pocas citas)
+    # 2. Separar artículos semilla (Máxima prioridad de anclaje)
+    seed_articles = [a for a in articles if a.get("is_seed", False)]
+    seed_ids = {s.get("id") or s.get("doi") for s in seed_articles}
+    remaining_pool = [a for a in articles if (a.get("id") or a.get("doi")) not in seed_ids]
+
+    # 3. Separar Joyas Emergentes (2025-2026 con pocas citas)
     emerging_candidates = [
-        a for a in articles 
-        if a.get("year", 0) >= (current_year - 1) and a.get("citations", 0) <= 5
+        a for a in remaining_pool
+        if a.get("year", 0) >= (current_year - 1) and a.get("citations", 0) <= 8 and not a.get("is_survey")
     ]
-    # Ordenar joyas emergentes por H5 del venue o por recencia
-    emerging_candidates.sort(key=lambda x: (x.get("year", 0), x.get("h5_index", 0)), reverse=True)
+    # Priorizar joyas con hardware benchmark o alto H5
+    emerging_candidates.sort(
+        key=lambda x: (x.get("is_hardware_benchmark", False), x.get("year", 0), x.get("h5_index", 0)),
+        reverse=True
+    )
     selected_emerging = emerging_candidates[:emerging_count]
-    emerging_ids = {e.get("id") for e in selected_emerging}
+    emerging_ids = {e.get("id") or e.get("doi") for e in selected_emerging}
 
-    # Ordenar el resto por composite_score
-    main_pool = [a for a in articles if a.get("id") not in emerging_ids]
-    main_pool.sort(key=lambda x: x["composite_score"], reverse=True)
+    # 4. Seleccionar el pool principal respetando cupo de surveys
+    candidate_main = [a for a in remaining_pool if (a.get("id") or a.get("doi")) not in emerging_ids]
+    candidate_main.sort(key=lambda x: x["composite_score"], reverse=True)
 
-    top_main = main_pool[:(top_n - len(selected_emerging))]
+    available_slots = top_n - len(seed_articles) - len(selected_emerging)
+    selected_main = []
+    surveys_included = 0
 
-    final_selection = top_main + selected_emerging
-    # Marcar joyas emergentes en los metadatos
+    for a in candidate_main:
+        if len(selected_main) >= available_slots:
+            break
+        if a.get("is_survey", False):
+            if surveys_included < max_surveys:
+                selected_main.append(a)
+                surveys_included += 1
+        else:
+            selected_main.append(a)
+
+    # 5. Ensamblar selección final: Semillas + Main + Joyas
+    final_selection = seed_articles + selected_main + selected_emerging
+
+    # Asignar etiquetas visibles
     for a in final_selection:
-        a["is_emerging_gem"] = a.get("id") in emerging_ids
+        if a.get("is_seed"):
+            a["tag"] = "🎯 Semilla de Anclaje"
+        elif (a.get("id") or a.get("doi")) in emerging_ids:
+            a["tag"] = "💎 Joya Reciente"
+        elif a.get("is_hardware_benchmark"):
+            a["tag"] = "⚙️ Benchmark Empírico"
+        elif a.get("is_survey"):
+            a["tag"] = "📖 SOTA Survey"
+        else:
+            a["tag"] = "🔬 SOTA Benchmark"
 
     return {
         "total_analyzed": len(articles),
+        "seed_articles": seed_articles,
         "top_ranked": final_selection,
         "emerging_gems": selected_emerging
     }
 
+
 def format_markdown_table(ranked_data: Dict[str, Any]) -> str:
     lines = [
-        "| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Tipo | Acceso | DOI |",
+        "| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Categoría / Tag | Acceso | DOI |",
         "|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|"
     ]
 
     for idx, art in enumerate(ranked_data["top_ranked"], start=1):
-        title = art.get("title", "")[:65] + ("..." if len(art.get("title", "")) > 65 else "")
+        title = art.get("title", "")[:60] + ("..." if len(art.get("title", "")) > 60 else "")
         year = art.get("year", "")
-        venue = art.get("venue", "N/A")[:30]
+        venue = art.get("venue", "N/A")[:28]
         q = art.get("quartile", "Desc")
         h5 = art.get("h5_index", 25)
         cites = art.get("citations", 0)
         ann_cites = art.get("annual_citations", 0.0)
         cite_str = f"{cites} ({ann_cites})"
-        gem_str = "💎 Joya Reciente" if art.get("is_emerging_gem") else "SOTA Benchmark"
+        tag_str = art.get("tag", "SOTA Benchmark")
         oa_str = "🔓 Open Access" if art.get("is_open_access") else "🔒 Paywall (Univ)"
         doi = art.get("doi", "")
         doi_link = f"[Enlace]({doi})" if doi else "N/A"
 
-        lines.append(f"| {idx} | {title} | {year} | {venue} | {q} | {h5} | {cite_str} | {gem_str} | {oa_str} | {doi_link} |")
+        lines.append(f"| {idx} | {title} | {year} | {venue} | {q} | {h5} | {cite_str} | `{tag_str}` | {oa_str} | {doi_link} |")
 
     return "\n".join(lines)
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Ranking multidimensional y selección de Joyas Emergentes")
+    parser = argparse.ArgumentParser(description="Ranking multidimensional con bonificación empírica, cuota de surveys y soporte de semilla")
     parser.add_argument("--input", required=True, help="Ruta al archivo JSON con artículos extraídos")
     parser.add_argument("--top", type=int, default=10, help="Número de artículos en el corte final")
     parser.add_argument("--emerging", type=int, default=2, help="Número de joyas emergentes a incluir")
+    parser.add_argument("--max-surveys", type=int, default=2, help="Máximo número de surveys permitidos en el Top")
     parser.add_argument("--format", choices=["json", "markdown"], default="markdown", help="Formato de salida")
     parser.add_argument("--output", default="", help="Ruta de guardado (opcional)")
 
     args = parser.parse_args()
-    in_path = Path(args.input)
 
+    in_path = Path(args.input)
     if not in_path.exists():
         print(f"[ERROR] Archivo no encontrado: {in_path}", file=sys.stderr)
         sys.exit(1)
@@ -109,20 +180,26 @@ def main():
     with open(in_path, "r", encoding="utf-8") as f:
         articles = json.load(f)
 
-    ranked_data = rank_articles(articles, top_n=args.top, emerging_count=args.emerging)
+    ranked_data = rank_articles(
+        articles,
+        top_n=args.top,
+        emerging_count=args.emerging,
+        max_surveys=args.max_surveys
+    )
 
     if args.format == "markdown":
-        output_text = format_markdown_table(ranked_data)
+        output_str = format_markdown_table(ranked_data)
     else:
-        output_text = json.dumps(ranked_data, ensure_ascii=False, indent=2)
+        output_str = json.dumps(ranked_data["top_ranked"], ensure_ascii=False, indent=2)
 
     if args.output:
         out_p = Path(args.output)
         out_p.parent.mkdir(parents=True, exist_ok=True)
-        out_p.write_text(output_text, encoding="utf-8")
-        print(f"[EXITO] Resultados guardados en: {out_p}")
+        out_p.write_text(output_str, encoding="utf-8")
+        print(f"[INFO] Ranking guardado en: {out_p}")
     else:
-        print(output_text)
+        print(output_str)
+
 
 if __name__ == "__main__":
     main()
