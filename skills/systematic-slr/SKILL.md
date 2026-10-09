@@ -39,17 +39,28 @@ flowchart TD
 ## Fase 2: Extracción y Recolección de Literatura
 Elige la fuente según la disponibilidad:
 
-### Opción A: Búsqueda Abierta (Vía OpenAlex - Sin API Key)
-Ejecuta el script del arnés:
+### Opción A: Búsqueda Agéntica e Iterativa (Motor Autónomo Recomendado)
+Ejecuta el bucle reflexivo de auto-refinamiento y crítico 1 a 1:
 ```bash
-python skills/literature-harvester/scripts/search_openalex.py \
+uv run python skills/literature-harvester/scripts/iterative_harvest.py \
+    --idea "<ruta_al_manuscrito_o_descripcion_del_tema>" \
+    --seed "<doi_o_url_semilla_opcional>" \
+    --target-pool 20 \
+    --final-top 10 \
+    --output-dir outputs/<nombre_de_propuesta>
+```
+*Este comando descompone facetas (Entidad, Método, Contexto), filtra ruido semántico, genera el pool auditable de 20 candidatos (`top20_candidatos_revisados.md`) y el Top 10 final ordenado (`summary_table.md` + `references.bib`).*
+
+### Opción B: Búsqueda Booleana Directa (Script Base)
+Si se desea ejecutar consultas manuales específicas sin bucle agéntico:
+```bash
+uv run python skills/literature-harvester/scripts/search_openalex.py \
     --include <termino1> <termino2> \
     --exclude <excluir1> <excluir2> \
     --years 3 \
     --max 40 \
-    --output investigations/<tema>/raw/articles.json
+    --output outputs/<tema>/raw/articles.json
 ```
-*Si se obtienen menos de 15 artículos pertinentes, amplía `--years` a 5.*
 
 ### Opción B: Ingesta de Scopus o Web of Science (Acceso Universitario)
 Si el investigador exportó un archivo CSV o `.bib` desde la biblioteca institucional:

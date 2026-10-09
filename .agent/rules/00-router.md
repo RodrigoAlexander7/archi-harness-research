@@ -10,7 +10,7 @@ Al recibir cualquier solicitud, clasifica la tarea y activa la skill o script co
 
 | Intención | Descripción | Skill / Herramienta Principal | Origen |
 | :--- | :--- | :--- | :--- |
-| **`SLR_DISCOVERY`** | Búsqueda y estado del arte sistematizado en 7 pasos | `skills/systematic-slr` (Guía paso a paso) | Nativa |
+| **`SLR_DISCOVERY`** | Búsqueda agéntica iterativa (Top 20 -> Top 10) con crítico 1 a 1 | `skills/literature-harvester/scripts/iterative_harvest.py` | Nativa |
 | **`PAPER_VALIDATION`** | Evaluar idea de paper con entrevista y Reviewer 2 | `skills/paper-validator` (Intake + Cuartiles) | Nativa |
 | **`MULTI_SCHOLAR_LOOKUP`** | Búsqueda en 18 APIs académicas (PubMed, arXiv, Crossref) | `skills/paper-lookup` | K-Dense (`scientific-agent-skills`) |
 | **`BIBTEX_MANAGEMENT`** | Conversión DOI a BibTeX y validación de referencias | `skills/citation-management` | K-Dense (`scientific-agent-skills`) |
@@ -26,7 +26,7 @@ Al recibir cualquier solicitud, clasifica la tarea y activa la skill o script co
 ## 2. Protocolo de Ejecución y Trazabilidad
 
 1. **Estado del Arte Sistematizado (SLR):**
-   - Siempre ejecuta con trazabilidad explícita: genera `fase1_identificacion_sin_filtrar.md`, `fase2_cribado_exclusiones.md` y `summary_table.md` antes del reporte final.
+   - Siempre ejecuta el motor agéntico `iterative_harvest.py`: genera de forma obligatoria `top20_candidatos_revisados.md` (pool auditable) y `summary_table.md` (Top 10 ordenado) + `references.bib` antes de redactar el informe final.
 2. **Validación de Ideas (Reviewer 2):**
    - Aplica primero la entrevista de admisión de 6 dimensiones (`skills/paper-validator/references/intake_rubric.md`).
    - Compara con el estado del arte y emite veredicto transparente de cuartiles.
