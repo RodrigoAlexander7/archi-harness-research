@@ -1,0 +1,12 @@
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Tipo | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | YOLO advances to its genesis: a decadal and comprehensive review ... | 2025 | Artificial Intelligence Review | Q1 | 130 | 301 (150.5) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1007/s10462-025-11253-3) |
+| 2 | Object detection on low-compute edge SoCs: a reproducible benchma... | 2026 | Scientific Reports | Q1 | 215 | 9 (9.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-026-36862-y) |
+| 3 | Consistent vehicle trajectory extraction from aerial recordings u... | 2025 | Scientific Reports | Q1 | 215 | 4 (2.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-025-12301-2) |
+| 4 | Safety helmet detection methods in heavy machinery factory | 2025 | Scientific Reports | Q1 | 215 | 4 (2.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-025-02824-z) |
+| 5 | HIT-UAV: A high-altitude infrared thermal dataset for Unmanned Ae... | 2023 | Scientific Data | Q1 | 120 | 287 (71.75) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41597-023-02066-6) |
+| 6 | YOLOv11: An Overview of the Key Architectural Enhancements | 2024 | arXiv (Cornell University) | No rankeado en DB local | 25 | 564 (188.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.48550/arxiv.2410.17725) |
+| 7 | Oriented object detection in optical remote sensing images using ... | 2025 | Artificial Intelligence Review | Q1 | 130 | 56 (28.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1007/s10462-025-11256-0) |
+| 8 | YOLO-GML: An object edge enhancement detection model for UAV aeri... | 2025 | PLoS ONE | Q2 | 180 | 6 (3.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1371/journal.pone.0328070) |
+| 9 | Efficient adaptive rotated object detection for 1D and QR barcode... | 2026 | Scientific Reports | Q1 | 215 | 1 (1.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.1038/s41598-025-34854-y) |
+| 10 | Real-Time High-Precision Detection of Vehicle Trajectories Using ... | 2026 | Photonic Sensors | Q2 | 120 | 2 (2.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.26599/phos.2026.9560008) |

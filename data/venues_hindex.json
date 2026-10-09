@@ -22,5 +22,12 @@
   "neurocomputing": {"publisher": "Elsevier", "quartile": "Q2", "h5_index": 92, "acronym": "Neurocomputing"},
   "computer communications": {"publisher": "Elsevier", "quartile": "Q2", "h5_index": 60, "acronym": "COMCOM"},
   "international journal of advanced computer science and applications": {"publisher": "SAI", "quartile": "Q3", "h5_index": 63, "acronym": "IJACSA"},
+  "artificial intelligence review": {"publisher": "Springer", "quartile": "Q1", "h5_index": 130, "acronym": "AI Review"},
+  "scientific data": {"publisher": "Nature", "quartile": "Q1", "h5_index": 120, "acronym": "Sci Data"},
+  "drones": {"publisher": "MDPI", "quartile": "Q1", "h5_index": 75, "acronym": "Drones"},
+  "algorithms": {"publisher": "MDPI", "quartile": "Q2", "h5_index": 45, "acronym": "Algorithms"},
+  "vehicles": {"publisher": "MDPI", "quartile": "Q2", "h5_index": 35, "acronym": "Vehicles"},
+  "inventions": {"publisher": "MDPI", "quartile": "Q2", "h5_index": 30, "acronym": "Inventions"},
+  "applied sciences": {"publisher": "MDPI", "quartile": "Q2", "h5_index": 110, "acronym": "Appl Sci"},
   "latin american computing conference": {"publisher": "IEEE", "quartile": "Conf", "h5_index": 12, "acronym": "CLEI"}
 }
