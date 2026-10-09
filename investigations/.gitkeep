@@ -1,0 +1,7 @@
+# Directorio de Investigaciones
+Cada investigación se organizará en una subcarpeta: `YYYY-MM-DD_<tema>/`
+Con la siguiente estructura:
+- `raw/`: Datos extraídos (JSON de OpenAlex, CSVs exportados de Scopus/WoS, BibTeX).
+- `summary_table.md`: Tabla top 5-10 clasificada por H5-index y citas.
+- `paper_validation.md`: Dictamen del Reviewer 2 y plan de pivote a Q1.
+- `report.md`: Síntesis completa del estado del arte.

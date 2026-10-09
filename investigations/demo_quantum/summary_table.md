@@ -1,0 +1,10 @@
+| # | Título | Año | Journal / Venue | Cuartil | H5 | Citas (Anual.) | Tipo | Acceso | DOI |
+|---|---|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | Perfect chiral quantum routing | 2025 | Physical Review A | No rankeado en DB local | 25 | 6 (3.0) | SOTA Benchmark | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1103/physreva.111.032439) |
+| 2 | Line-Graph Qubit Routing | 2025 | ACM Transactions on Quantum Co | No rankeado en DB local | 25 | 1 (0.5) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.1145/3733842) |
+| 3 | Routing Protocols Based on Quantum Bunch Graph | 2025 | Studies in computational intel | No rankeado en DB local | 25 | 0 (0.0) | SOTA Benchmark | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1007/978-3-031-82058-8_13) |
+| 4 | Graph Reinforcement Learning for Calibration-Aware Quantum Circui... | 2026 | arXiv (Cornell University) | No rankeado en DB local | 25 | 0 (0.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.48550/arxiv.2606.12816) |
+| 5 | Quantum-Enhanced Probabilistic Graph Embedding via Entanglement-B... | 2026 | Zenodo (CERN European Organiza | No rankeado en DB local | 25 | 0 (0.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.5281/zenodo.22602460) |
+| 6 | Quantum State Routing and Perfect State Transfer on Signed Graphs... | 2026 | arXiv (Cornell University) | No rankeado en DB local | 25 | 0 (0.0) | SOTA Benchmark | 🔓 Open Access | [Enlace](https://doi.org/10.48550/arxiv.2609.39890) |
+| 7 | A Hybrid Quantum-Meta Reinforcement Learning and Graph Attention ... | 2026 | IEEE Access | No rankeado en DB local | 25 | 2 (2.0) | 💎 Joya Reciente | 🔓 Open Access | [Enlace](https://doi.org/10.1109/access.2026.3664972) |
+| 8 | Vehicle Routing Problems via Quantum Graph Attention Network Deep... | 2026 | Communications in computer and | No rankeado en DB local | 25 | 1 (1.0) | 💎 Joya Reciente | 🔒 Paywall (Univ) | [Enlace](https://doi.org/10.1007/978-981-92-2584-2_44) |
