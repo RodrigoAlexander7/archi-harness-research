@@ -33,3 +33,5 @@ Al recibir cualquier solicitud, clasifica la tarea y activa la skill o script co
 3. **Escritura y Gráficos:**
    - Para las figuras del paper (curvas de scaling, matrices de confusión), utiliza los estilos editoriales de `skills/academic-plotting`.
    - Para generar las referencias bibliográficas sin errores, utiliza `skills/citation-management`.
+4. **Aislamiento Estricto de Salidas (Regla 04):**
+   - Todos los entregables deben generarse dentro de `outputs/[nombre_de_propuesta]/`. Jamás escribas en la raíz de `outputs/` para no ensuciar el repositorio y permitir comparativas de rendimiento.
