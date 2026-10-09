@@ -8,10 +8,10 @@ Al recibir cualquier solicitud, clasifica la tarea en uno de los siguientes fluj
 
 | Intención | Descripción | Skill / Script Principal | Plantilla de Salida |
 | :--- | :--- | :--- | :--- |
-| **`SLR_DISCOVERY`** | Búsqueda y estado del arte sistematizado desde cero | `literature-harvester/scripts/search_openalex.py` | `slr_report_template.md` |
-| **`IMPORT_INSTITUTIONAL`** | Procesar datos exportados de Scopus o Web of Science | `literature-harvester/scripts/import_scopus_wos.py` | `slr_report_template.md` |
-| **`PAPER_VALIDATION`** | Evaluar una idea, hipótesis o abstract para revista Q1/Q2 | `paper-validator/scripts/assess_novelty.py` | `paper_validation_report_template.md` |
-| **`RANK_AND_FILTER`** | Filtrar por palabras negativas y ordenar por H-index/citas | `literature-harvester/scripts/rank_and_filter.py` | Tabla Top 5-10 |
+| **`SLR_DISCOVERY`** | Búsqueda y estado del arte sistematizado desde cero | `skills/systematic-slr` (Orquestador 7 Pasos) | `slr_report_template.md` |
+| **`IMPORT_INSTITUTIONAL`** | Procesar datos exportados de Scopus o Web of Science | `skills/literature-harvester/scripts/import_scopus_wos.py` | `slr_report_template.md` |
+| **`PAPER_VALIDATION`** | Evaluar una idea, hipótesis o abstract para revista Q1/Q2 | `skills/paper-validator/scripts/assess_novelty.py` | `paper_validation_report_template.md` |
+| **`RANK_AND_FILTER`** | Filtrar por palabras negativas y ordenar por H-index/citas | `skills/literature-harvester/scripts/rank_and_filter.py` | Tabla Top 5-10 |
 
 ---
 
