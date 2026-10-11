@@ -40,3 +40,5 @@ env/
 
 # Investigation scratch/raw binaries
 investigations/**/downloads/*.pdf
+
+outputs/
