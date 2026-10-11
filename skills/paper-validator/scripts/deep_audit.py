@@ -364,16 +364,19 @@ def main():
     args = parser.parse_args()
 
     # 1. Cargar y procesar texto de la idea
-    idea_path = Path(args.idea)
-    if idea_path.exists():
-        raw_content = idea_path.read_text(encoding="utf-8")
-        if idea_path.suffix.lower() == ".tex":
-            clean_content = clean_latex(raw_content)
-        else:
-            clean_content = raw_content
-    else:
-        raw_content = args.idea
-        clean_content = args.idea
+    raw_content = args.idea
+    clean_content = args.idea
+    if len(args.idea) < 1024 and "\n" not in args.idea:
+        try:
+            idea_path = Path(args.idea)
+            if idea_path.exists() and idea_path.is_file():
+                raw_content = idea_path.read_text(encoding="utf-8")
+                if idea_path.suffix.lower() == ".tex":
+                    clean_content = clean_latex(raw_content)
+                else:
+                    clean_content = raw_content
+        except OSError:
+            pass
 
     idea_tokens = tokenize_clean(clean_content)
     domain = detect_domain(clean_content, args.domain)

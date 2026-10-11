@@ -93,15 +93,26 @@ BILINGUAL_MAP = {
     "borde": "edge", "red": "network", "redes": "network", "neuronal": "neural",
     "aprendizaje": "learning", "detección": "detection", "clasificación": "classification",
     "orientado": "oriented", "orientada": "oriented", "tiempo": "time", "real": "real",
-    "traducción": "translation", "lengua": "language", "lenguas": "language", "idioma": "language",
-    "morfología": "morphology", "generativo": "generative", "generativa": "generative",
-    "evaluación": "evaluation", "comparativo": "comparative", "óptimo": "optimal"
+    "traducción": "translation", "traductor": "translation", "lengua": "language", "lenguas": "language", "idioma": "language",
+    "morfología": "morphology", "morfológica": "morphological", "morfosintaxis": "morphosyntax",
+    "generativo": "generative", "generativa": "generative", "aglutinante": "agglutinative",
+    "evaluación": "evaluation", "comparativo": "comparative", "óptimo": "optimal",
+    "indígena": "indigenous", "indígenas": "indigenous", "hablante": "speaker", "hablantes": "speaker",
+    "nativo": "native", "nativos": "native", "ranura": "slot", "ranuras": "slot",
+    "andamiaje": "scaffolding", "determinista": "deterministic", "semántico": "semantic",
+    "semántica": "semantic", "corpus": "corpus"
 }
 
 
 def parse_research_intake(raw_input: str) -> Dict[str, Any]:
-    p = Path(raw_input)
-    raw_text = p.read_text(encoding="utf-8", errors="ignore") if p.exists() and p.is_file() else raw_input
+    raw_text = raw_input
+    if "\n" not in raw_input and len(raw_input) < 1024:
+        try:
+            p = Path(raw_input)
+            if p.exists() and p.is_file():
+                raw_text = p.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            pass
 
     title = ""
     abstract = ""
@@ -119,6 +130,12 @@ def parse_research_intake(raw_input: str) -> Dict[str, Any]:
     if kw_m:
         kw_str = kw_m.group(1)
         keywords_list = [k.strip() for k in re.split(r"\\and|,|;", kw_str) if k.strip()]
+
+    if not keywords_list:
+        kw_md = re.search(r"(?:Keywords|Palabras clave|Key words|Palabras Clave):\s*([^\n]+)", raw_text, re.IGNORECASE)
+        if kw_md:
+            kw_str = kw_md.group(1)
+            keywords_list = [k.strip() for k in re.split(r",|;", kw_str) if k.strip()]
 
     if not title:
         m_title = re.search(r"^#\s+(.+)$", raw_text, re.MULTILINE)
@@ -166,14 +183,19 @@ def extract_facets_and_profile(parsed_intake: Dict[str, Any]) -> Dict[str, Any]:
         "yolo", "cnn", "transformer", "llm", "neural", "deep", "detector", "segmenter",
         "segmentation", "detection", "classification", "translation", "recognition",
         "algorithm", "model", "framework", "architecture", "fts5", "bert", "resnet",
-        "obb", "oriented", "bounding", "slot", "rule", "neuro-symbolic", "generative"
+        "obb", "oriented", "bounding", "slot", "rule", "neuro-symbolic", "generative",
+        "neuro", "symbolic", "hybrid", "machine", "statistical", "parsing", "parser",
+        "scaffolding", "scaffold", "deterministic", "semantic", "pipeline", "heuristic",
+        "nlp", "prompt", "prompting", "fine-tuning", "finetuning", "fst", "pos", "system"
     }
     
     context_indicators = {
         "edge", "embedded", "raspberry", "fpga", "jetson", "soc", "microcontroller",
         "real-time", "realtime", "latency", "fps", "power", "int8", "quantization",
         "throughput", "heterogeneous", "mixed", "dense", "congested", "low-resource",
-        "agglutinative", "morphotactic", "benchmark", "benchmarking", "scaling", "urban"
+        "agglutinative", "morphotactic", "morphology", "polysynthetic", "benchmark", "benchmarking",
+        "scaling", "urban", "peruvian", "peru", "andean", "evaluation", "evaluacion",
+        "native", "speaker", "indigenous", "corpus", "dataset", "multilingual"
     }
 
     title_kw_words = re.findall(r"\b[a-zA-ZáéíóúÁÉÍÓÚñÑ]{3,}\b", (title + " " + " ".join(keywords)).lower())
@@ -220,28 +242,55 @@ def extract_facets_and_profile(parsed_intake: Dict[str, Any]) -> Dict[str, Any]:
 
 def formulate_facet_queries(profile: Dict[str, Any], round_num: int = 1) -> List[str]:
     queries = []
-    e_toks = profile["entity_tokens"]
-    m_toks = profile["method_tokens"]
-    c_toks = profile["context_tokens"]
+    keywords = profile.get("keywords", [])
+    e_toks = profile.get("entity_tokens", [])
+    m_toks = profile.get("method_tokens", [])
+    c_toks = profile.get("context_tokens", [])
 
-    e_main = e_toks[0] if e_toks else "vehicle"
-    m_main = m_toks[0] if m_toks else "YOLO"
+    e1 = e_toks[0] if len(e_toks) > 0 else ""
+    e2 = e_toks[1] if len(e_toks) > 1 else ""
+    m1 = m_toks[0] if len(m_toks) > 0 else ""
+    m2 = m_toks[1] if len(m_toks) > 1 else ""
+    c1 = c_toks[0] if len(c_toks) > 0 else ""
+    c2 = c_toks[1] if len(c_toks) > 1 else ""
 
     if round_num == 1:
-        queries.append(f'"{m_main}" "{e_main} detection" edge')
-        queries.append(f'"oriented bounding box" {e_main} detection')
-        queries.append(f'"{e_main} detection" "heterogeneous traffic"')
-        queries.append(f'{m_main} Raspberry Pi {e_main}')
-        queries.append(f'real-time {e_main} detection embedded')
+        for kw in keywords[:4]:
+            if len(kw.split()) >= 2:
+                queries.append(kw)
+        if "machine" in m_toks and "translation" in m_toks and e1:
+            queries.append(f'"{e1}" "machine translation"')
+        if ("morphology" in m_toks or "morphology" in c_toks or "morphotactic" in c_toks) and e1:
+            queries.append(f'"{e1}" morphology')
+        if e1 and m1:
+            queries.append(f'"{e1}" "{m1}"')
+            if m2 and m2 != "machine":
+                queries.append(f'"{e1}" "{m2}"')
+        if e1 and m1 and c1:
+            queries.append(f'"{e1}" "{m1}" "{c1}"')
+        elif e1 and c1:
+            queries.append(f'"{e1}" "{c1}"')
+
     elif round_num == 2:
-        queries.append(f'"{m_main}" {e_main} latency FPS')
-        queries.append(f'lightweight {m_main} {e_main} edge')
-        queries.append(f'rotated {e_main} detection oblique')
-        queries.append(f'"{e_main} classification" embedded FPGA')
+        target_e = f'"{e1}"' if e1 else ""
+        if target_e and "low-resource" in c_toks:
+            queries.append(f'{target_e} "low-resource"')
+        if target_e and m1 and c2:
+            queries.append(f'{target_e} {m1} {c2}')
+        if target_e and c1:
+            queries.append(f'{target_e} {c1}')
+        if e2 and m1:
+            queries.append(f'"{e2}" {m1}')
+        if target_e and m2 and m2 != "machine":
+            queries.append(f'{target_e} {m2}')
+
     else:
-        queries.append(f'compact {m_main} {e_main} detection')
-        queries.append(f'edge AI {e_main} counting traffic')
-        queries.append(f'int8 quantization {m_main} {e_main}')
+        target_e = f'"{e1}"' if e1 else ""
+        if target_e:
+            queries.append(f'{target_e} benchmark')
+            queries.append(f'{target_e} evaluation')
+            if m1:
+                queries.append(f'{target_e} {m1} dataset')
 
     clean_queries = []
     seen = set()
@@ -274,46 +323,52 @@ def evaluate_paper_affinity(
         if re.search(rf"\b{re.escape(exc)}\b", text_full):
             return 2.0, f"Descartado por filtro de ruido confirmado: '{exc}'"
 
-    # 2. Descarte de dominios ajenos obvios (ships, fabric, wire bonding, asphalt cracks, potholes, signs)
+    # 2. Descarte de dominios ajenos obvios (solo si esos términos no forman parte de la propuesta)
     off_target_patterns = [
         "ship", "vessel", "fabric", "textile", "pothole", "asphalt crack", "pavement crack",
-        "traffic sign", "signboard", "face recognition", "retina", "biomedical", "wire bonding"
+        "traffic sign", "signboard", "face recognition", "retina", "biomedical", "wire bonding",
+        "quantum", "protein sequence", "solar cell", "photovoltaic"
     ]
     for otp in off_target_patterns:
-        if otp in text_full:
+        if otp in text_full and not any(otp in w for w in profile.get("all_words", [])):
             return 2.5, f"Descartado: Dominio off-target detectado ('{otp}')"
 
     # 3. Verificación de Entidad Núcleo (E)
     e_stems = {STEMMER.stem(e) for e in profile["entity_tokens"]}
     if any(e in profile["entity_tokens"] for e in ["vehicle", "traffic"]):
         e_stems.update({STEMMER.stem(w) for w in ["vehicle", "car", "traffic", "bus", "truck", "motorcycle", "automobile", "mototaxi", "uav"]})
+    elif any(e in profile["entity_tokens"] for e in ["quechua", "spanish", "indigenous", "language"]):
+        e_stems.update({STEMMER.stem(w) for w in ["quechua", "indigenous", "americasnlp", "runasimi", "aymara", "nahuatl", "guarani"]})
 
     text_words = set(re.findall(r"\b[a-zA-Z]{3,}\b", text_full))
     text_stems = {STEMMER.stem(w) for w in text_words}
 
     has_entity = any(es in text_stems for es in e_stems)
     if not has_entity:
-        return 3.0, "Descartado: Entidad núcleo ausente (no trata sobre vehículos/tráfico)"
+        entity_preview = ", ".join(profile["entity_tokens"][:2]) if profile["entity_tokens"] else "tema central"
+        return 3.0, f"Descartado: Entidad núcleo ausente (no trata sobre {entity_preview})"
 
     # 4. Verificación de Método (M) y Contexto (C)
     m_stems = {STEMMER.stem(m) for m in profile["method_tokens"]}
     c_stems = {STEMMER.stem(c) for c in profile["context_tokens"]}
 
-    has_method = any(ms in text_stems for ms in m_stems)
-    has_context = any(cs in text_stems for cs in c_stems)
+    m_matches = [ms for ms in m_stems if ms in text_stems]
+    c_matches = [cs for cs in c_stems if cs in text_stems]
 
-    score = 6.0
-    if has_entity: score += 1.5
-    if has_method: score += 1.5
+    has_method = len(m_matches) > 0
+    has_context = len(c_matches) > 0
+
+    if not has_method:
+        return 3.5, "Descartado: Método técnico/computacional ausente en el paper"
+
+    score = 7.0
     if has_context: score += 1.0
-
-    if any(w in text_full for w in ["oriented", "obb", "rotated", "angle"]):
-        score += 0.5
-    if any(w in text_full for w in ["edge", "embedded", "raspberry", "fpga", "real-time"]):
-        score += 0.5
+    if len(m_matches) >= 2: score += 0.5
+    if len(c_matches) >= 2: score += 0.5
+    if any(w in text_full for w in profile.get("all_words", [])): score += 0.5
 
     final_score = round(min(max(score, 0.0), 10.0), 2)
-    justification = f"Alta afinidad. Coincide con Entidad {'+ Método' if has_method else ''} {'+ Contexto Edge' if has_context else ''}"
+    justification = f"Alta afinidad. Coincide con Entidad + Método {'+ Contexto' if has_context else ''}"
 
     return final_score, justification
 
@@ -422,13 +477,19 @@ def run_iterative_harvest(
     max_iterations: int = 5,
     min_affinity: float = 7.0,
     years_back: int = 3,
-    output_dir: str = ""
+    output_dir: str = "",
+    keywords: str = ""
 ) -> Dict[str, Any]:
     current_year = datetime.now().year
     from_year = current_year - years_back
     venues_db = load_venues_db()
 
     parsed_intake = parse_research_intake(topic_input)
+    if keywords:
+        cli_kws = [k.strip() for k in keywords.split(",") if k.strip()]
+        for ck in cli_kws:
+            if ck not in parsed_intake["keywords"]:
+                parsed_intake["keywords"].append(ck)
     profile = extract_facets_and_profile(parsed_intake)
 
     print("=" * 80)
@@ -686,6 +747,7 @@ def main():
     parser.add_argument("--final-top", type=int, default=10, help="Cantidad final de artículos a clasificar (default: 10)")
     parser.add_argument("--max-iterations", type=int, default=5, help="Máximo de iteraciones de refinamiento (default: 5)")
     parser.add_argument("--min-affinity", type=float, default=7.0, help="Umbral mínimo de afinidad semántica 0-10 (default: 7.0)")
+    parser.add_argument("--keywords", type=str, default="", help="Palabras clave separadas por comas (opcional)")
     parser.add_argument("--years", type=int, default=3, help="Años de antigüedad hacia atrás (default: 3)")
     parser.add_argument("--output-dir", type=str, default="", help="Directorio de salida para los artefactos")
 
@@ -699,7 +761,8 @@ def main():
         max_iterations=args.max_iterations,
         min_affinity=args.min_affinity,
         years_back=args.years,
-        output_dir=args.output_dir
+        output_dir=args.output_dir,
+        keywords=args.keywords
     )
 
 
